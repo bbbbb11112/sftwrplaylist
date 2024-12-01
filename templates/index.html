@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player</title>
+    <link rel="stylesheet" href="/static/index.css">
+    <script>
+        let audioFiles = {{ audio_files|tojson|safe }}; // JSON 형식으로 audio_files 가져옴
+        let currentIndex = 0; // 현재 트랙 인덱스
+        let audioContext; // 오디오 컨텍스트
+        let analyser; // 오디오 분석기
+
+        // 배열을 섞는 함수
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        shuffleArray(audioFiles); // audioFiles 배열 섞기
+
+        // 트랙 정보 업데이트
+        function updateTrackInfo() {
+            const audioElement = document.getElementById('audio-player');
+            const titleElement = document.getElementById('track-title');
+            const coverElement = document.getElementById('album-cover');
+            const currentTrack = audioFiles[currentIndex];
+            const originalPath = currentTrack.path.replace(/\\/g, '/').split('/').pop();
+            const trackName = originalPath.replace(/\.[^/.]+$/, ""); // 확장자 제거
+
+            titleElement.textContent = trackName;
+
+            const selectedEffects = getSelectedEffects();
+            const encodedFilename = encodeURIComponent(originalPath);
+
+            audioElement.src = `/audio/${encodedFilename}?effects=${selectedEffects}`;
+            coverElement.src = `/cover/${encodedFilename}`;
+
+            coverElement.onerror = () => {
+                coverElement.src = "/public/none";
+                coverElement.onerror = null;
+            };
+
+            audioElement.load();
+
+            // Android 메서드 호출 - 오디오 전송
+            if (window.Android) {
+                window.Android.updateTrackInfo(trackName, coverElement.src);
+                window.Android.transferAudioData(originalPath);
+
+                // 재생이 끝나면 Android 메서드를 호출하여 다음 곡으로 넘기기
+                document.getElementById('audio-player').addEventListener('ended', function() {
+                    currentIndex = (currentIndex + 1) % audioFiles.length; // 순환하여 다음 곡으로 이동
+                    updateTrackInfo();
+                    window.Android.updateTrackInfo(trackName, coverElement.src);
+                    window.Android.transferAudioData(originalPath);
+                    playAudio();
+            });
+        }
+        }
+
+        // 선택된 효과 가져오기
+        function getSelectedEffects() {
+            const effects = [];
+            document.querySelectorAll('input[name="effects"]:checked').forEach((checkbox) => {
+                effects.push(checkbox.value);
+            });
+            return effects.join(',');
+        }
+
+        // 다음 트랙
+        function nextTrack() {
+            currentIndex++;
+            if (currentIndex >= audioFiles.length) {
+                currentIndex = 0;
+            }
+            updateTrackInfo();
+            const audioElement = document.getElementById('audio-player');
+            audioElement.currentTime = 0;
+
+            audioElement.play().catch(error => {
+                console.log("Playback failed due to user interaction requirements. Error: ", error);
+            });
+        }
+
+        // 이전 트랙
+        function previousTrack() {
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = audioFiles.length - 1;
+            }
+            updateTrackInfo();
+            const audioElement = document.getElementById('audio-player');
+            audioElement.currentTime = 0;
+
+            audioElement.play().catch(error => {
+                console.log("Playback failed due to user interaction requirements. Error: ", error);
+            });
+        }
+
+        function setTrack(index) {
+            currentIndex = index
+            updateTrackInfo();
+            const audioElement = document.getElementById('audio-player');
+            audioElement.currentTime = 0;
+
+            audioElement.play().catch(error => {
+                console.log("Playback failed due to user interaction requirements. Error: ", error);
+            });
+        }
+
+        window.onload = function() {
+            const audioElement = document.getElementById('audio-player');
+            setTrack(0);
+
+            audioElement.addEventListener('stalled', () => {
+                console.log("Audio playback stalled, moving to next track after 3 seconds.");
+                setTimeout(() => {
+                    nextTrack();
+                }, 3000);
+            });
+
+            audioElement.addEventListener('playing', () => {
+                console.log("Audio playback resumed.");
+            });
+
+            audioElement.addEventListener('ended', () => {
+                nextTrack();
+            });
+
+            const sidebar = document.querySelector(".sidebar-content");
+            audioFiles.forEach((audio, i) => {
+                const div = document.createElement('div');
+                div.onclick = () => {
+                    setTrack(i);
+                }
+                div.textContent = audio.name;
+                div.className = "sidebar-track";
+                sidebar.appendChild(div);
+            })
+        };
+    </script>
+</head>
+
+<body>
+    <div class="title"><h1>Audio Player with Effects</h1></div>
+    <div class="main">
+        <div class="content">
+            <div class="player">
+                <h3 id="track-title"></h3>
+                <img id="album-cover" src="default_cover.png" alt="Album Cover" width="300" height="300" />
+                <div class="special-controls">
+                    <h4>Select Effects:</h4>
+                    <label><input type="checkbox" name="effects" value="echo"> Echo</label><br>
+                    <label><input type="checkbox" name="effects" value="reverb"> Reverb</label><br>
+                </div>
+                <audio id="audio-player" controls>
+                    <source id="audio-source" src="" type="audio/flac">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        
+            <div class="buttons">
+                <button onclick="previousTrack()">Previous Track</button>
+                <button onclick="nextTrack()">Next Track</button>
+            </div>
+        </div>
+        <div class="sidebar">
+            <div class="sidebar-content">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

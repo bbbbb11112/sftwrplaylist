@@ -1,0 +1,22 @@
+1*file*C:\Users\UserK\Desktop\PWP\audio\A Photo of Sisters - 유즈키 유카리.mp3
+10*file*C:\Users\UserK\Desktop\PWP\audio\Lemon - 清水優希.mp3
+11*file*C:\Users\UserK\Desktop\PWP\audio\Song for... - GUMI.mp3
+12*file*C:\Users\UserK\Desktop\PWP\audio\【東方】SA Utsuho Reiuji's theme - Solar Sect of Mystic Wisdom ~ Nuclear Fusion (Slowed down).mp3
+13*file*C:\Users\UserK\Desktop\PWP\audio\【結月ゆかり】Mμte-Step.mp3
+14*file*C:\Users\UserK\Desktop\PWP\audio\かくしごと  【初音ミク】.mp3
+15*file*C:\Users\UserK\Desktop\PWP\audio\アイドル(YOASOBI) − 清水優希Shimizu Yuuki.mp3
+16*file*C:\Users\UserK\Desktop\PWP\audio\シークライファー(short ver.).mp3
+17*file*C:\Users\UserK\Desktop\PWP\audio\ベテルギウス - 清水優希.mp3
+18*file*C:\Users\UserK\Desktop\PWP\audio\三原色 - 淸水優希.mp3
+19*file*C:\Users\UserK\Desktop\PWP\audio\何でもないや - 清水優希.mp3
+20*file*C:\Users\UserK\Desktop\PWP\audio\愛を伝えたいだとか.mp3
+21*file*C:\Users\UserK\Desktop\PWP\audio\고양이화 현상 Lv.100 - 하츠네미쿠.mp3
+22*file*C:\Users\UserK\Desktop\PWP\audio\또보자, 일등성 - 나츠키 카린.mp3
+23*file*C:\Users\UserK\Desktop\PWP\audio\메모리 스텝 - IA.mp3
+24*file*C:\Users\UserK\Desktop\PWP\audio\밤을 달리다夜に駆ける(YOASOBI) - 清水優希 Shimizu Yuuki COVER.mp3
+25*file*C:\Users\UserK\Desktop\PWP\audio\밤의 노래 - 리메.mp3
+26*file*C:\Users\UserK\Desktop\PWP\audio\이카사마 - 유즈키 유카리.mp3
+27*file*C:\Users\UserK\Desktop\PWP\audio\일등성 - 카후x리메.mp3
+28*file*C:\Users\UserK\Desktop\PWP\audio\자살예방토끼 - 유즈키 유카리.mp3
+29*file*C:\Users\UserK\Desktop\PWP\audio\질풍가도 -清水優希.mp3
+30*file*C:\Users\UserK\Desktop\PWP\audio\히토리고토 - 카후x리메.mp3
